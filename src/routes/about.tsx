@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/SectionHeading";
 import gallery2 from "@/assets/gallery/gallery2.jpg";
-import gallery6 from "@/assets/gallery/gallery6.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
