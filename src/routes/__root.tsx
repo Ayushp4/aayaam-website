@@ -7,26 +7,22 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-
 import appCss from "../styles.css?url";
+import { LangProvider } from "@/lib/i18n";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { FloatingLetters } from "@/components/FloatingLetters";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-warm-gradient px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
+        <div className="font-hindi-display text-9xl text-gradient-saffron">४०४</div>
+        <h2 className="mt-4 font-hindi text-2xl text-maroon">पृष्ठ नहीं मिला</h2>
+        <p className="mt-2 text-sm text-muted-foreground">यह पन्ना खो गया है शब्दों के सागर में।</p>
+        <Link to="/" className="mt-6 inline-flex rounded-full bg-saffron-gradient px-6 py-2.5 text-sm font-medium text-cream shadow-warm">
+          मुखपृष्ठ पर लौटें
+        </Link>
       </div>
     </div>
   );
@@ -35,33 +31,17 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-warm-gradient px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Try again
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
-        </div>
+        <h1 className="font-hindi-display text-3xl text-maroon">कुछ अनुचित हुआ</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+        <button
+          onClick={() => { router.invalidate(); reset(); }}
+          className="mt-6 rounded-full bg-saffron-gradient px-6 py-2.5 text-sm font-medium text-cream shadow-warm"
+        >
+          पुनः प्रयास करें
+        </button>
       </div>
     </div>
   );
@@ -72,21 +52,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "AAYAAM · आयाम — Hindi Literary & Cultural Club, NIT Trichy" },
+      { name: "description", content: "AAYAAM — आयाम, the Hindi Literary & Cultural Club of NIT Trichy. Bhasha Se Bhav Tak. Since 2006." },
+      { property: "og:title", content: "AAYAAM · आयाम — NIT Trichy" },
+      { property: "og:description", content: "शब्दों से भाव तक — Hindi Literary & Cultural Club, NIT Trichy." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
+    links: [{ rel: "stylesheet", href: appCss }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -96,10 +68,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
+    <html lang="hi">
+      <head><HeadContent /></head>
       <body>
         {children}
         <Scripts />
@@ -110,10 +80,16 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <LangProvider>
+        <div className="paper-texture min-h-screen">
+          <FloatingLetters />
+          <Header />
+          <Outlet />
+          <Footer />
+        </div>
+      </LangProvider>
     </QueryClientProvider>
   );
 }
