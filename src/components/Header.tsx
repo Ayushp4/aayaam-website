@@ -29,7 +29,7 @@ export function Header() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "py-3 backdrop-blur-xl bg-cream/75 border-b border-maroon/10 shadow-warm" : "py-5 bg-transparent"
+        scrolled ? "py-3 backdrop-blur-xl bg-cream/85 border-b border-maroon/10 shadow-warm" : "py-5 bg-cream/40 backdrop-blur-sm"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between gap-6">
@@ -41,8 +41,10 @@ export function Header() {
             <div className="absolute -inset-1 rounded-full border border-gold/40 group-hover:rotate-180 transition-transform duration-1000" />
           </div>
           <div className="leading-tight">
-            <div className="font-hindi-display text-maroon text-xl tracking-wide">आयाम</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-saffron font-medium">Aayaam · NITT</div>
+            <div className="font-hindi-display text-maroon text-xl tracking-wide">{t("आयाम", "AAYAAM")}</div>
+            <div className="text-[10px] tracking-[0.25em] uppercase text-saffron font-medium">
+              {t("एन.आई.टी. त्रिची", "NIT Trichy")}
+            </div>
           </div>
         </Link>
 
@@ -68,12 +70,30 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => setLang(lang === "hi" ? "en" : "hi")}
-            className="relative px-4 py-2 rounded-full border border-maroon/30 hover:border-saffron text-xs font-medium tracking-wider uppercase text-maroon hover:bg-saffron hover:text-cream transition-all duration-300"
+          <div
+            role="group"
+            aria-label="Language"
+            className="inline-flex items-center rounded-full border border-maroon/25 bg-cream/70 backdrop-blur p-1 shadow-sm"
           >
-            {lang === "hi" ? "EN" : "हिं"}
-          </button>
+            <button
+              onClick={() => setLang("hi")}
+              className={`px-3 py-1 rounded-full text-xs font-medium tracking-wide transition-all duration-300 ${
+                lang === "hi" ? "bg-saffron-gradient text-cream shadow-warm" : "text-maroon hover:text-saffron"
+              }`}
+              aria-pressed={lang === "hi"}
+            >
+              हिं
+            </button>
+            <button
+              onClick={() => setLang("en")}
+              className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
+                lang === "en" ? "bg-saffron-gradient text-cream shadow-warm" : "text-maroon hover:text-saffron"
+              }`}
+              aria-pressed={lang === "en"}
+            >
+              EN
+            </button>
+          </div>
           <button
             className="md:hidden p-2 text-maroon"
             onClick={() => setOpen(!open)}
