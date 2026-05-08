@@ -17,8 +17,9 @@ export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
-  // Add this:
-  build: {
-    outDir: 'dist/client'
-  }
+  vite: {
+    build: {
+      outDir: "dist/client",
+    },
+  },
 });
