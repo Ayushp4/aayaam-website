@@ -72,8 +72,11 @@ export default {
       // Normalize legacy/preview URLs like "/index" or "/index.html" to "/".
       const url = new URL(request.url);
       if (url.pathname === "/index" || url.pathname === "/index.html") {
-        url.pathname = "/";
-        return Response.redirect(url.toString(), 308);
+        const search = url.search ?? "";
+        return new Response(null, {
+          status: 308,
+          headers: { location: `/${search}` },
+        });
       }
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
