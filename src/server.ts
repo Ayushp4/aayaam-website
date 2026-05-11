@@ -69,6 +69,12 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      // Normalize legacy/preview URLs like "/index" or "/index.html" to "/".
+      const url = new URL(request.url);
+      if (url.pathname === "/index" || url.pathname === "/index.html") {
+        url.pathname = "/";
+        return Response.redirect(url.toString(), 308);
+      }
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
